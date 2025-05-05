@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Selamat Ulang Tahun!</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to top right, #e0f7ff, #d0e0ff);
+      height: 100vh;
+      width: 100vw;
+      position: relative;
+    }
+
+    .candle-count-display {
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 30px;
+      font-weight: bold;
+      color: #f0f8ff;
+      background-color: #73baf7;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      width: fit-content;
+      border: 2px solid #bbdefb;
+      z-index: 950;
+    }
+
+
+    .cake {
+      position: absolute;
+      width: 250px;
+      height: 200px;
+      top: 60%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 950;
+    }
+
+    .plate {
+      width: 270px;
+      height: 110px;
+      background-color: #ccc;
+      border-radius: 50%;
+      position: absolute;
+      bottom: -10px;
+      left: -10px;
+      box-shadow: 0 5px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .layer {
+      position: absolute;
+      width: 250px;
+      height: 100px;
+      border-radius: 50%;
+      background-color: #a0c4ff;
+      box-shadow: 0 2px 0px #8ecae6, 0 4px 0px #90e0ef, 0 6px 0px #90e0ef, 0 8px 0px #90e0ef, 0 10px 0px #90e0ef, 0 12px 0px #90e0ef;
+    }
+
+    .layer-top { top: 0; }
+    .layer-middle { top: 33px; }
+    .layer-bottom { top: 66px; }
+
+    .icing {
+      top: 2px;
+      left: 5px;
+      background-color: #e0f7ff;
+      width: 240px;
+      height: 90px;
+      border-radius: 50%;
+      position: absolute;
+      z-index: 1;
+    }
+
+    .drip {
+      position: absolute;
+      background-color: #e0f7ff;
+      border-radius: 25px;
+    }
+
+    .drip1 { top: 53px; left: 5px; width: 40px; height: 48px; transform: skewY(15deg); }
+    .drip2 { top: 69px; left: 181px; width: 50px; height: 60px; transform: skewY(-15deg); }
+    .drip3 { top: 54px; left: 90px; width: 80px; height: 60px; border-radius: 40px; }
+
+    .candle {
+      background-color: #0a3d62;
+      width: 40px;
+      height: 50px;
+      border-radius: 8px;
+      position: absolute;
+      top: -35px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    .flame {
+      position: absolute;
+      background-color: orange;
+      width: 10px;
+      height: 25px;
+      border-radius: 8px;
+      top: -34px;
+      left: 50%;
+      margin-left: -5px;
+      box-shadow: 0 0 20px orange;
+      animation: flicker 1s infinite alternate;
+    }
+
+    @keyframes flicker {
+      0% { transform: skewX(5deg); }
+      25% { transform: skewX(-5deg); }
+      50% { transform: skewX(10deg); }
+      75% { transform: skewX(-10deg); }
+      100% { transform: skewX(5deg); }
+    }
+
+    .prompt {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1rem;
+      background: rgba(0,0,0,0.4);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 10px;
+      z-index: 950;
+    }
+
+    .message-box {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 102, 204, 0.6);
+      color: white;
+      padding: 40px 50px;
+      border-radius: 20px;
+      width: 70%;
+      max-width: 800px;
+      text-align: center;
+      z-index: 999;
+      font-size: 1.3rem;
+      backdrop-filter: blur(5px);
+    }
+
+    .button-controls {
+      display: none;
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 999;
+    }
+
+    .button-controls button {
+      margin: 5px;
+      padding: 10px 15px;
+      border: none;
+      background: #1565c0;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s;
+    }
+
+    .button-controls button:hover {
+      transform: scale(1.05);
+    }
+
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: visible;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+    .balloon {
+      position: absolute;
+      width: 36px;
+      height: 48px;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      animation: float 3s infinite ease-in-out;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+      z-index: 800;
+    }
+
+    .string {
+      position: absolute;
+      width: 2px;
+      height: 40px;
+      top: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: -1;
+    }
+
+    .string::after {
+      content: '';
+      position: absolute;
+      left: -1px;
+      width: 6px;
+      height: 100%;
+      border-left: 2px solid #666;
+      border-radius: 50%;
+      animation: wave 1.2s infinite ease-in-out;
+    }
+
+    @keyframes wave {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(3deg); }
+    }
+
+
+    #balloonContainer {
+      filter: blur(0.3px);
+      opacity: 0.9;
+    }
+
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(150vh); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div id="balloonContainer" style="position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 900;"></div>
+  <div class="candle-count-display">Happy Birthday, Nanda!</div>
+
+  <div class="cake">
+    <div class="plate"></div>
+    <div class="layer layer-bottom"></div>
+    <div class="layer layer-middle"></div>
+    <div class="layer layer-top"></div>
+    <div class="icing"></div>
+    <div class="drip drip1"></div>
+    <div class="drip drip2"></div>
+    <div class="drip drip3"></div>
+    <div class="candle" id="candle">21</div>
+  </div>
+
+  <div class="prompt" id="promptText">Klik lilin angka 21 ya!^^</div>
+  <div class="message-box" id="messageBox">
+    <h2>Happy Birthday, Nanda! 💙</h2>
+    <p>Wishing you a day full of love, light, and little joys</p>
+    <p>May this year bring growth, grace, and glowing moments</p>
+    <p>Keep being the beautiful light you are!</p>
+    <p>Dari: Esther, Ivana, atau nama lainnya dari kamu hehe</p>
+    <p id="qrHint" style="margin-top: 20px; font-size: 1rem; color: #fff; font-style: italic; display: none;">
+      Psst... coba klik bagian kuenya ya! Aku punya sesuatu untukmu.
+    </p>    
+  </div>
+
+  <div id="qrPopup" style="
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    text-align: center;
+  ">
+  <p style="margin-top: 8; font-weight: bold;">Scan hadiah kecil dari aku ya!</p>
+  <img src="qr-code.png" alt="QR Code" style="max-width: 200px; width: 100%;" />
+
+  <div id="musicLink" style="display: none; margin-top: 20px;">
+    <a href="https://open.spotify.com/playlist/508OzPEVWb62ROIP6KAbH3?si=6KXGFfaTSKqVkxgYPNL7Sw" target="_blank"
+        style="color: #a4c9fa; text-decoration: underline; font-weight: bold;">
+        Klik di sini untuk playlist spesial dari aku
+    </a>
+  </div> 
+  
+  <br>
+  <button onclick="document.getElementById('qrPopup').style.display='none'" style="
+  margin-top: 10px;
+  padding: 8px 12px;
+  background: #1565c0;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  ">Tutup</button>
+</div>  
+
+  <div class="button-controls" id="musicControls">
+    <button aria-label="music.play()">▶ Play Music</button>
+    <button aria-label="music.pause()">⏸ Stop Music</button>
+  </div>
+
+  <audio id="music" src="music.mp3"></audio>
+  <div class="confetti" id="confetti"></div>
+
+  <script>
+    const candle = document.getElementById("candle");
+    const music = document.getElementById("music");
+    const messageBox = document.getElementById("messageBox");
+    const promptText = document.getElementById("promptText");
+    const musicControls = document.getElementById("musicControls");
+    const confetti = document.getElementById("confetti");
+    const balloonContainer = document.getElementById("balloonContainer");
+
+    function createConfetti() {
+      const count = 350;
+      for (let i = 0; i < count; i++) {
+        const piece = document.createElement("div");
+        piece.style.position = "fixed";
+        piece.style.width = "6px";
+        piece.style.height = "10px";
+        piece.style.background = `hsl(${Math.random() * 360}, 100%, 60%)`;
+        piece.style.left = `${Math.random() * 100}vw`;
+        piece.style.top = `-${Math.random() * 100}vh`;
+        piece.style.opacity = 0.9;
+        piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+        piece.style.animation = `fall ${6 + Math.random() * 2}s linear ${Math.random() * 1}s forwards`;
+        piece.style.zIndex = "9999";
+        confetti.appendChild(piece);
+      }
+
+    setTimeout(() => {
+      confetti.innerHTML = "";
+    }, 10000);
+  }
+
+  function createBalloons() {
+  for (let i = 0; i < 21; i++) {
+    const balloon = document.createElement("div");
+    balloon.classList.add("balloon");
+    balloon.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 70%)`;
+
+    let left, top;
+    let safe = false;
+    let tries = 0;
+
+    while (!safe && tries < 100) {
+      left = Math.random() * 100;
+      top = Math.random() * 100;
+      if (left < 42 || left > 58 || top < 35 || top > 65) safe = true;
+      tries++;
+    }
+
+    balloon.style.left = `${left}vw`;
+    balloon.style.top = `${top}vh`;
+    const string = document.createElement("div");
+    string.classList.add("string");
+    balloon.appendChild(string);
+    balloonContainer.appendChild(balloon);
+    }
+  }
+
+    function showMessage() {
+      messageBox.style.display = "block";
+      document.getElementById("qrHint").style.display = "block";
+      createConfetti();
+    }
+
+    function handleClick() {
+      if (!document.querySelector(".flame")){
+        const flame = document.createElement("div");
+        flame.classList.add("flame");
+        candle.appendChild(flame);
+      }
+
+      promptText.style.display = "none";
+      music.play();
+    showMessage();
+
+    setTimeout(() => {
+      music.pause();
+      musicControls.style.display = "flex";
+    }, 14000);
+  }
+
+    createBalloons(); 
+
+    candle.addEventListener("click", handleClick);
+
+    const cake = document.querySelector(".cake");
+    const qrPopup = document.getElementById("qrPopup");
+
+    cake.addEventListener("click", (e) => {
+      const isCandle = e.target.closest(".candle");
+      if (!isCandle) {
+        qrPopup.style.display = "block";
+        document.getElementById("musicLink").style.display = "block";
+      }
+    });
+</script>
+</body>
+</html>
